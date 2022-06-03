@@ -59,9 +59,11 @@ function App() {
     return false;
   };
 
-  const onCellClick = (position) => {
+  const onCellClick = (position, setHoverState, setHoverEffect) => {
     if (gameState[position] !== null || winner) return;
 
+    setHoverEffect('');
+    setHoverState(Array(9).fill(null));
     const gameStateCopy = [...gameState];
     const player = isX ? 'X' : 'O';
     gameStateCopy[position] = player;
@@ -118,29 +120,33 @@ function App() {
   return (
     <>
       <div className="mainContainer">
-        <h1 className="heading">
-          TIC &nbsp;<span className="tac"> TAC &nbsp;</span> TOE
-        </h1>
-        <p className="turn">{isX ? 'X' : 'O'}'s turn</p>
-        <Board
-          gameState={gameState}
-          onClick={onCellClick}
-          winnerCells={winnerCells}
-        />
-        <h1 className="gameProgress" style={{ textAlign: 'center' }}>
-          {winner === null
-            ? 'Game in Progress'
-            : movesCount === 9 && winner === 'Draw'
-            ? 'Match Draw'
-            : `Winner: ${winner}`}
-        </h1>
-        <div class="controls">
-          <button type="button" onClick={handleUndo}>
-            Undo
-          </button>
-          <button type="button" onClick={resetGame}>
-            Reset
-          </button>
+        <div className="wrapper">
+          <h1 className="heading">
+            TIC &nbsp;<span className="tac"> TAC &nbsp;</span> TOE
+          </h1>
+          <p className="turn">{isX ? 'X' : 'O'}'s turn</p>
+          <Board
+            gameState={gameState}
+            onClick={onCellClick}
+            winnerCells={winnerCells}
+            isX={isX}
+            winner={winner}
+          />
+          <h1 className="gameProgress" style={{ textAlign: 'center' }}>
+            {winner === null
+              ? 'Game in Progress'
+              : movesCount === 9 && winner === 'Draw'
+              ? 'Match Draw'
+              : `Winner: ${winner}`}
+          </h1>
+          <div class="controls">
+            <button type="button" onClick={handleUndo}>
+              Undo
+            </button>
+            <button type="button" onClick={resetGame}>
+              Reset
+            </button>
+          </div>
         </div>
       </div>
     </>
