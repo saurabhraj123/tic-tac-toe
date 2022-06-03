@@ -51,3 +51,11 @@
 .board :last-child .column {
   border-bottom: none;
 }
+
+.X {
+  color: #f6bf60;
+}
+
+.O {
+  color: #03c878;
+}

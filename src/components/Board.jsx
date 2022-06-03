@@ -2,9 +2,13 @@ import React from 'react';
 import '../styles/board.css';
 
 const Board = ({ gameState, onClick }) => {
+  function getColStyle(position) {
+    return `column ${gameState[position]}`;
+  }
+
   function getColumn(position) {
     return (
-      <div className="column" onClick={() => onClick(position)}>
+      <div className={getColStyle(position)} onClick={() => onClick(position)}>
         {gameState[position]}
       </div>
     );
