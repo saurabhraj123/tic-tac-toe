@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import Board from './components/Board';
 import './styles/app.css';
+import zero from './audio/zero.mp3';
+import cross from './audio/cross.mp3';
+import win from './audio/win.mp3';
+import tie from './audio/tie.mp3';
+import undoSound from './audio/undo.mp3';
+import resetSound from './audio/reset.mp3';
 
 function App() {
   const [gameState, setGameState] = useState(Array(9).fill(null));
@@ -34,6 +40,7 @@ function App() {
           winningPositions[i][2],
         ];
         setWinnerCells(temp);
+        new Audio(win).play();
         return true;
       }
 
@@ -48,11 +55,19 @@ function App() {
     gameStateCopy[position] = player;
     setGameState(gameStateCopy);
 
+    if (player === 'X') {
+      console.log('idhar x');
+      new Audio(cross).play();
+    } else {
+      new Audio(zero).play();
+    }
+
     if (checkWin(player, gameStateCopy)) {
       setWinner(player);
     } else {
       if (movesCount === 8) {
         setWinner('Draw');
+        new Audio(tie).play();
       }
     }
 
@@ -61,17 +76,19 @@ function App() {
     const newUndo = [...undo];
     newUndo.push(position);
     setUndo(newUndo);
-    console.log('count:', movesCount);
   };
 
   const resetGame = () => {
+    if (movesCount === 0) return;
     const resetArray = Array(9).fill(null);
     console.log(movesCount);
     setGameState(resetArray);
-    setIsX(!isX);
+    new Audio(resetSound).play();
+    setIsX('X');
     setWinner(null);
     setMovesCount(0);
     setWinnerCells([]);
+    setUndo([]);
   };
 
   const handleUndo = () => {
@@ -79,6 +96,7 @@ function App() {
     const gameStateCopy = [...gameState];
     gameStateCopy[undo.pop()] = null;
     setGameState(gameStateCopy);
+    new Audio(undoSound).play();
     setMovesCount((prevState) => prevState - 1);
     setIsX(!isX);
     setWinner(null);
@@ -87,29 +105,31 @@ function App() {
 
   return (
     <>
-      <h1 className="heading">
-        TIC &nbsp;<span className="tac"> TAC &nbsp;</span> TOE
-      </h1>
-      <p className="turn">{isX ? 'X' : 'O'}'s turn</p>
-      <Board
-        gameState={gameState}
-        onClick={onCellClick}
-        winnerCells={winnerCells}
-      />
-      <h1 className="gameProgress" style={{ textAlign: 'center' }}>
-        {winner === null
-          ? 'Game in Progress'
-          : movesCount === 9 && winner === 'Draw'
-          ? 'Match Draw'
-          : `Winner: ${winner}`}
-      </h1>
-      <div class="controls">
-        <button type="button" onClick={handleUndo}>
-          Undo
-        </button>
-        <button type="button" onClick={resetGame}>
-          Reset
-        </button>
+      <div className="mainContainer">
+        <h1 className="heading">
+          TIC &nbsp;<span className="tac"> TAC &nbsp;</span> TOE
+        </h1>
+        <p className="turn">{isX ? 'X' : 'O'}'s turn</p>
+        <Board
+          gameState={gameState}
+          onClick={onCellClick}
+          winnerCells={winnerCells}
+        />
+        <h1 className="gameProgress" style={{ textAlign: 'center' }}>
+          {winner === null
+            ? 'Game in Progress'
+            : movesCount === 9 && winner === 'Draw'
+            ? 'Match Draw'
+            : `Winner: ${winner}`}
+        </h1>
+        <div class="controls">
+          <button type="button" onClick={handleUndo}>
+            Undo
+          </button>
+          <button type="button" onClick={resetGame}>
+            Reset
+          </button>
+        </div>
       </div>
     </>
   );
