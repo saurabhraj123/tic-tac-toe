@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Board from './components/Board';
 import './styles/app.css';
 import zero from './audio/zero.mp3';
@@ -22,6 +22,10 @@ function App() {
     tie,
     undoSound,
     resetSound,
+  });
+
+  useEffect(() => {
+    Object.entries(audios).map((audio) => new Audio(audio[1]));
   });
 
   const winningPositions = [
