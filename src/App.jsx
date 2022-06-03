@@ -10,12 +10,12 @@ function App() {
   const [undo, setUndo] = useState([]);
   const [winnerCells, setWinnerCells] = useState([]);
 
-  const tie = './src/audio/tie.mp3';
-  const win = './src/audio/win.mp3';
-  const cross = './src/audio/cross.mp3';
-  const zero = './src/audio/zero.mp3';
-  const undoSound = './src/audio/undo.mp3';
-  const resetSound = './src/audio/reset.mp3';
+  const tie = '/public/audio/tie.mp3';
+  const win = '/public/audio/win.mp3';
+  const cross = '/public/audio/cross.mp3';
+  const zero = '/public/audio/zero.mp3';
+  const undoSound = '/public/audio/undo.mp3';
+  const resetSound = '/public/audio/reset.mp3';
 
   const winningPositions = [
     [0, 1, 2],
