@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import Board from './components/Board';
 import './styles/app.css';
+import zero from './audio/zero.mp3';
+import cross from './audio/cross.mp3';
+import win from './audio/win.mp3';
+import tie from './audio/tie.mp3';
+import undoSound from './audio/undo.mp3';
+import resetSound from './audio/reset.mp3';
 
 function App() {
   const [gameState, setGameState] = useState(Array(9).fill(null));
@@ -9,14 +15,14 @@ function App() {
   const [movesCount, setMovesCount] = useState(0);
   const [undo, setUndo] = useState([]);
   const [winnerCells, setWinnerCells] = useState([]);
-  const [audioLocation, setAudioLocation] = useState('../public/audio/');
-
-  // const tie = '../public/audio/tie.mp3';
-  // const win = '../public/audio/win.mp3';
-  // const cross = '../public/audio/cross.mp3';
-  // const zero = '../public/audio/zero.mp3';
-  // const undoSound = '../public/audio/undo.mp3';
-  // const resetSound = '../public/audio/reset.mp3';
+  const [audios, setAudios] = useState({
+    zero,
+    cross,
+    win,
+    tie,
+    undoSound,
+    resetSound,
+  });
 
   const winningPositions = [
     [0, 1, 2],
@@ -42,7 +48,7 @@ function App() {
           winningPositions[i][2],
         ];
         setWinnerCells(temp);
-        new Audio(audioLocation + 'win.mp3').play();
+        new Audio(audios.win).play();
         return true;
       }
 
@@ -59,11 +65,9 @@ function App() {
 
     if (player === 'X') {
       console.log('idhar x');
-      // new Audio(cross).play();
-      new Audio(audioLocation + 'cross.mp3').play();
+      new Audio(audios.cross).play();
     } else {
-      // new Audio(zero).play();
-      new Audio(audioLocation + 'zero.mp3').play();
+      new Audio(audios.zero).play();
     }
 
     if (checkWin(player, gameStateCopy)) {
@@ -71,8 +75,7 @@ function App() {
     } else {
       if (movesCount === 8) {
         setWinner('Draw');
-        // new Audio(tie).play();
-        new Audio(audioLocation + 'tie.mp3').play();
+        new Audio(audios.tie).play();
       }
     }
 
@@ -88,8 +91,7 @@ function App() {
     const resetArray = Array(9).fill(null);
     console.log(movesCount);
     setGameState(resetArray);
-    // new Audio(resetSound).play();
-    new Audio(audioLocation + 'reset.mp3').play();
+    new Audio(audios.resetSound).play();
     setIsX('X');
     setWinner(null);
     setMovesCount(0);
@@ -102,8 +104,7 @@ function App() {
     const gameStateCopy = [...gameState];
     gameStateCopy[undo.pop()] = null;
     setGameState(gameStateCopy);
-    // new Audio(undoSound).play();
-    new Audio(audioLocation + 'win.mp3').play();
+    new Audio(audios.undoSound).play();
     setMovesCount((prevState) => prevState - 1);
     setIsX(!isX);
     setWinner(null);
