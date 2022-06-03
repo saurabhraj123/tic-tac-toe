@@ -1,9 +1,11 @@
 import React from 'react';
 import '../styles/board.css';
 
-const Board = ({ gameState, onClick }) => {
+const Board = ({ gameState, onClick, winnerCells }) => {
   function getColStyle(position) {
-    return `column ${gameState[position]}`;
+    let winner = '';
+    if (winnerCells.includes(position)) winner = 'winner';
+    return `column ${gameState[position]} ${winner}`;
   }
 
   function getColumn(position) {

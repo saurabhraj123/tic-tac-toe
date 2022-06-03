@@ -8,6 +8,7 @@ function App() {
   const [winner, setWinner] = useState(null);
   const [movesCount, setMovesCount] = useState(0);
   const [undo, setUndo] = useState([]);
+  const [winnerCells, setWinnerCells] = useState([]);
 
   const winningPositions = [
     [0, 1, 2],
@@ -26,8 +27,15 @@ function App() {
         gameStateCopy[winningPositions[i][0]] === value &&
         gameStateCopy[winningPositions[i][1]] === value &&
         gameStateCopy[winningPositions[i][2]] === value
-      )
+      ) {
+        const temp = [
+          winningPositions[i][0],
+          winningPositions[i][1],
+          winningPositions[i][2],
+        ];
+        setWinnerCells(temp);
         return true;
+      }
 
     return false;
   };
@@ -50,7 +58,9 @@ function App() {
 
     setIsX(!isX);
     setMovesCount((prevState) => prevState + 1);
-    undo.push(position);
+    const newUndo = [...undo];
+    newUndo.push(position);
+    setUndo(newUndo);
     console.log('count:', movesCount);
   };
 
@@ -61,15 +71,18 @@ function App() {
     setIsX(!isX);
     setWinner(null);
     setMovesCount(0);
+    setWinnerCells([]);
   };
 
   const handleUndo = () => {
+    if (undo.length === 0) return;
     const gameStateCopy = [...gameState];
     gameStateCopy[undo.pop()] = null;
     setGameState(gameStateCopy);
     setMovesCount((prevState) => prevState - 1);
     setIsX(!isX);
     setWinner(null);
+    setWinnerCells([]);
   };
 
   return (
@@ -78,7 +91,11 @@ function App() {
         TIC &nbsp;<span className="tac"> TAC &nbsp;</span> TOE
       </h1>
       <p className="turn">{isX ? 'X' : 'O'}'s turn</p>
-      <Board gameState={gameState} onClick={onCellClick} />
+      <Board
+        gameState={gameState}
+        onClick={onCellClick}
+        winnerCells={winnerCells}
+      />
       <h1 className="gameProgress" style={{ textAlign: 'center' }}>
         {winner === null
           ? 'Game in Progress'

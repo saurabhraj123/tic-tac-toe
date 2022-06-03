@@ -59,3 +59,8 @@
 .O {
   color: #03c878;
 }
+
+.winner {
+  background-color: rgb(102, 114, 184);
+  color: white;
+}
