@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import Board from './components/Board';
 import './styles/app.css';
-import zero from './audio/zero.mp3';
-import cross from './audio/cross.mp3';
-import win from './audio/win.mp3';
-import tie from './audio/tie.mp3';
-import undoSound from './audio/undo.mp3';
-import resetSound from './audio/reset.mp3';
 
 function App() {
   const [gameState, setGameState] = useState(Array(9).fill(null));
@@ -15,6 +9,13 @@ function App() {
   const [movesCount, setMovesCount] = useState(0);
   const [undo, setUndo] = useState([]);
   const [winnerCells, setWinnerCells] = useState([]);
+
+  const tie = 'src/audio/tie.mp3';
+  const win = 'src/audio/win.mp3';
+  const cross = 'src/audio/cross.mp3';
+  const zero = 'src/audio/zero.mp3';
+  const undoSound = 'src/audio/undo.mp3';
+  const resetSound = 'src/audio/reset.mp3';
 
   const winningPositions = [
     [0, 1, 2],
