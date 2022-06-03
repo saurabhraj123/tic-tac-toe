@@ -9,13 +9,14 @@ function App() {
   const [movesCount, setMovesCount] = useState(0);
   const [undo, setUndo] = useState([]);
   const [winnerCells, setWinnerCells] = useState([]);
+  const [audioLocation, setAudioLocation] = useState('../public/audio/');
 
-  const tie = '../public/audio/tie.mp3';
-  const win = '../public/audio/win.mp3';
-  const cross = '../public/audio/cross.mp3';
-  const zero = '../public/audio/zero.mp3';
-  const undoSound = '../public/audio/undo.mp3';
-  const resetSound = '../public/audio/reset.mp3';
+  // const tie = '../public/audio/tie.mp3';
+  // const win = '../public/audio/win.mp3';
+  // const cross = '../public/audio/cross.mp3';
+  // const zero = '../public/audio/zero.mp3';
+  // const undoSound = '../public/audio/undo.mp3';
+  // const resetSound = '../public/audio/reset.mp3';
 
   const winningPositions = [
     [0, 1, 2],
@@ -41,7 +42,7 @@ function App() {
           winningPositions[i][2],
         ];
         setWinnerCells(temp);
-        new Audio(win).play();
+        new Audio(audioLocation + 'win.mp3').play();
         return true;
       }
 
@@ -58,9 +59,11 @@ function App() {
 
     if (player === 'X') {
       console.log('idhar x');
-      new Audio(cross).play();
+      // new Audio(cross).play();
+      new Audio(audioLocation + 'cross.mp3').play();
     } else {
-      new Audio(zero).play();
+      // new Audio(zero).play();
+      new Audio(audioLocation + 'zero.mp3').play();
     }
 
     if (checkWin(player, gameStateCopy)) {
@@ -68,7 +71,8 @@ function App() {
     } else {
       if (movesCount === 8) {
         setWinner('Draw');
-        new Audio(tie).play();
+        // new Audio(tie).play();
+        new Audio(audioLocation + 'tie.mp3').play();
       }
     }
 
@@ -84,7 +88,8 @@ function App() {
     const resetArray = Array(9).fill(null);
     console.log(movesCount);
     setGameState(resetArray);
-    new Audio(resetSound).play();
+    // new Audio(resetSound).play();
+    new Audio(audioLocation + 'reset.mp3').play();
     setIsX('X');
     setWinner(null);
     setMovesCount(0);
@@ -97,7 +102,8 @@ function App() {
     const gameStateCopy = [...gameState];
     gameStateCopy[undo.pop()] = null;
     setGameState(gameStateCopy);
-    new Audio(undoSound).play();
+    // new Audio(undoSound).play();
+    new Audio(audioLocation + 'win.mp3').play();
     setMovesCount((prevState) => prevState - 1);
     setIsX(!isX);
     setWinner(null);
